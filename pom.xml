@@ -1,0 +1,172 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>tw.fondus.tool</groupId>
+	<artifactId>thredds-asc</artifactId>
+	<version>0.1.0</version>
+	<packaging>jar</packaging>
+
+	<name>NetCDF-Utils</name>
+	<url>http://maven.apache.org</url>
+
+	<organization>
+		<name>FondUS Technology Co., Ltd., TW</name>
+		<url>https://github.com/Fondus</url>
+	</organization>
+	<!-- groupId, developers and build sections are all inherited by child modules -->
+	<developers>
+		<developer>
+			<name>Chao</name>
+			<organization>FondUS Technology Co., Ltd., TW</organization>
+			<email>bochao.liang1111@gmail.com</email>
+		</developer>
+	</developers>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<string.version>0.4.0</string.version>
+		<jodatime.version>2.9.9</jodatime.version>
+		<commons.netcdf.version>0.6.0</commons.netcdf.version>
+		<commons.fews.version>0.6.5</commons.fews.version>
+		<commons.utils.version>0.7.0</commons.utils.version>
+		<guava.version>23.4-jre</guava.version>
+		<slf4j.version>1.7.25</slf4j.version>
+		<junit.version>4.12</junit.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>unidata-all</id>
+			<name>Unidata All</name>
+			<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<!-- Strman -->
+		<dependency>
+			<groupId>com.shekhargulati</groupId>
+			<artifactId>strman</artifactId>
+			<version>${string.version}</version>
+		</dependency>
+		<!-- Joda-time -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${jodatime.version}</version>
+		</dependency>
+		<!-- Commons-NetCDF -->
+		<dependency>
+			<groupId>tw.fondus.commons</groupId>
+			<artifactId>commons-netcdf</artifactId>
+			<version>${commons.netcdf.version}</version>
+		</dependency>
+		<!-- Commons-FEWS -->
+		<dependency>
+			<groupId>tw.fondus.commons</groupId>
+			<artifactId>commons-fews</artifactId>
+			<version>${commons.fews.version}</version>
+		</dependency>
+		<!-- Commons-Utils -->
+		<dependency>
+			<groupId>tw.fondus.commons</groupId>
+			<artifactId>commons-utils</artifactId>
+			<version>${commons.utils.version}</version>
+		</dependency>
+		<!-- Google Guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+		<!-- Slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-jdk14</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- JUnit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<!-- Copy resources -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<!-- Copy dependencies to target folder -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/libs</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Skip unit tests -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+			<!-- Package runnable JAR with dependencies -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>../libs/</classpathPrefix>
+							<mainClass>
+								tw.fondus.tool.thredds.command.main.ThreddsProcess
+							</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<!-- Build with 1.8 -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/Fondus/WexflowTasks-SensLink/issues</url>
+	</issueManagement>
+</project>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wexflow_THREDDS>
+	<variableNames>
+		<x>x</x>
+		<y>y</y>
+		<value>depth_below_surface_simulated</value>
+		<missingValue>_FillValue</missingValue>
+	</variableNames>
+	<urls>
+		<url input="<netcdf input path(url)>" output="<asc output path>" />
+		<url input="<netcdf input path(url)>" output="<asc output path>" />
+	</urls>
+</Wexflow_THREDDS>
